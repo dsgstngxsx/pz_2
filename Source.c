@@ -4,7 +4,7 @@
 
 #define STUDENT struct student
 #define AEROFLOT struct aeroflot
-#define students 10
+#define students 3
 #define flight 3
 
 
@@ -26,6 +26,8 @@ int tasks(void)
 			exit(0);
 		case 1:
 			t1(); tasks();
+		case 12:
+			t12(); tasks();
 		case 2:
 			t2(); tasks();
 		case 3:
@@ -60,7 +62,7 @@ int t1()
 			scanf("%ld", &p[i].grade[j]);
 		}
 	}
-	puts("\nStudent's average grade is 4.0: ");
+	puts("\nStudent's average grade is >4.0: ");
 	for (int i = 0; i < students; i++)
 	{
 		float all_marks = 0;
@@ -83,6 +85,52 @@ int t1()
 	{
 		puts("There are no students with 4.0");
 	}
+}
+int t12()
+{
+	STUDENT
+	{
+		char surname[10];
+		int group;
+		int grade[5];
+	};
+	int k = 0;
+	STUDENT p[students];
+
+	FILE* input = fopen("input.txt", "r");
+	FILE* output = fopen("output.txt", "w");
+
+	for (int i = 0; i < students; i++)
+	{
+		fscanf(input, "%s %d %d %d %d %d %d", &p[i].surname, &p[i].group, &p[i].grade[0], &p[i].grade[1], &p[i].grade[2], &p[i].grade[3], &p[i].grade[4]);
+	}
+	fclose(input);
+
+	puts("see result in output.txt");
+	fprintf(output,"Student's average grade is >4.0: \n");
+	for (int i = 0; i < students; i++)
+	{
+		float all_marks = 0;
+		for (int j = 0; j < 5; j++)
+		{
+			all_marks += p[i].grade[j];
+		}
+		float average_grade = all_marks / 5;
+
+		if (average_grade > 4.0)
+		{
+			fprintf(output,"\nSurname: %s \n", p[i].surname);
+			fprintf(output, "Group: %ld \n", p[i].group);
+			k++;
+
+		}
+	}
+	
+	if (k == 0)
+	{
+		fprintf(output, "There are no students with >4.0");
+	}
+	fclose(output);
 }
 int t2()
 {
@@ -114,14 +162,14 @@ int t2()
 		{
 			if (p[i].grade[j] == 4 || p[i].grade[j] == 5)
 			{
-				marks == 0;
+				if (p[i].grade[j] + p[i].grade[j+1] + p[i].grade[j+2] + p[i].grade[j+3] + p[i].grade[j+4] != 25 && p[i].grade[j] + p[i].grade[j+1] + p[i].grade[j+2] + p[i].grade[j+3] + p[i].grade[j+4] != 20)
+				{
+					marks++;
+				}
 			}
-			else
-			{
-				marks++;
-			}
+			
 		}
-		if (marks == 0)
+		if (marks == 5)
 		{
 			printf("\nSurname: %s \n", p[i].surname);
 			printf("Group: %ld \n", p[i].group);
